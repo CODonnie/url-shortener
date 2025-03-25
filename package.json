@@ -1,0 +1,35 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index",
+    "dev": "nodemon src/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CODonnie/url-shortener.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/CODonnie/url-shortener/issues"
+  },
+  "homepage": "https://github.com/CODonnie/url-shortener#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "graphql-tag": "^2.12.6",
+    "mongoose": "^8.13.0",
+    "shortid": "^2.2.17"
+  },
+  "devDependencies": {
+    "@apollo/server": "^4.11.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "graphql": "^16.10.0",
+    "nodemon": "^3.1.9"
+  }
+}
