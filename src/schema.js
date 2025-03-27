@@ -3,13 +3,14 @@ import gql from "graphql-tag";
 const typeDefs = gql`
   type Url {
     shortId: String!
-    originalId: String!
+    originalUrl: String!
     clicks: Int!
     createdAt: String!
   }
 
   type Query {
-    getUrl(shortId: String!): Url
+    getUrl(shortId: String!): Url,
+		getAnalytics: [Url!]
   }
 
   type Mutation {

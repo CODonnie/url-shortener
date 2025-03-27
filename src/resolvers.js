@@ -1,17 +1,12 @@
-import Url from "./models/urlModel.js";
+import { getAUrl, analytics, shortenUrl } from "./services/urlService.js";
 
 const resolvers = {
   Query: {
-    getUrl: async (_, { shortId }) => {
-      return await Url.findOne({ shortId });
-    },
-  },
+    getUrl: async (_, { shortId }) => getAUrl(shortId),
+		getAnalytics: async () => analytics(),
+	},
   Mutation: {
-    shortenedUrl: async (_, { url }) => {
-      const newUrl = new Url({ originalUrl: url });
-      await newUrl.save();
-      return `http://localhost:5000/${newUrl.shortId}`;
-    },
+    shortenedUrl: async (_, { url }) => shortenUrl(url),
   },
 };
 

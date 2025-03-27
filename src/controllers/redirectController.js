@@ -10,7 +10,6 @@ export const redirectUrl = async (req, res) => {
 			{ $inc : { clicks: 1 } },
 			{ new: true },
 		);
-		console.log('increased');
 
     if (!urlEntry) {
       return res.status(404).send("<h1>404: Url not found</h1>");
