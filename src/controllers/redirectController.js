@@ -19,11 +19,11 @@ export const redirectUrl = async (req, res) => {
 			{ new: true },
 		);
 
-    if (!urlEntry) {
+    if (!urlEntry || urlEntry.expiresAt < new Date()) {
       return res.status(404).send("<h1>404: Url not found</h1>");
     }
 
-		await redisClient.set(shortId, urlEntry.originalUrl, "EX", 3600);
+		await redisClient.set(shortId, urlEntry.originalUrl, "EX", 604800);
 		console.log("Cache miss, retrieved and redirecting from DB, saved to Redis");
     res.redirect(urlEntry.originalUrl);
   } catch (error) {

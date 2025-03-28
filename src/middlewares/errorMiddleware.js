@@ -1,10 +1,17 @@
-const errorHandler = (err, req, res, next) => {
-	console.log(`Error: ${err.message}`);
+import AppError from "../utils/appError.js";
 
-	res.status(err.statusCode || 500).json({
-		message: err.message || "Internal server error",
-		stack: process.env.NODE_ENV === "production" ? null : err.stack
-	});
-}
+const errorHandler = (err) => {
+  if (err.originalError instanceof AppError) {
+    return {
+      message: err.message,
+      statusCode: err.originalError.statusCode,
+    };
+  }
+
+  return {
+    message: "Internal server error",
+    statusCode: 500,
+  };
+};
 
 export default errorHandler;

@@ -4,7 +4,8 @@ import shortid from "shortid";
 const UrlSchema = new mongoose.Schema({
 	shortId: { type: String, default: shortid.generate, unique: true },
 	originalUrl: { type: String, required: true },
-	clicks: { type: Number, default: 0 }
+	clicks: { type: Number, default: 0 },
+	expiresAt: { type: Date, expires: 604800 },
 }, { timestamps: true });
 
 const Url = mongoose.models.Url || mongoose.model("Url", UrlSchema);

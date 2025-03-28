@@ -8,6 +8,7 @@ import resolvers from "./resolvers.js";
 import connectDB from "./config/dbConnection.js";
 import urlRoutes from "./routes/urlRoutes.js";
 import errorHandler from "./middlewares/errorMiddleware.js";
+import cookieParser from "cookie-parser";
 
 //init
 dotenv.config();
@@ -19,7 +20,8 @@ const port = process.env.PORT;
 //ApolloServer setup
 const server = new ApolloServer({
 	typeDefs,
-	resolvers
+	resolvers,
+	formatError: errorHandler,
 });
 
 //GRAPHQL middleware
@@ -28,13 +30,15 @@ async function startServer() {
 
 	app.use(cors());
 	app.use(express.json());
-	app.use("/graphql", expressMiddleware(server));
+	app.use(cookieParser());
+	app.use("/graphql", expressMiddleware(server, {
+		context: async ({ req, res }) => ({ req, res })
+	}));
 
 	//use Routes
 	app.use("/", urlRoutes);
 
 	//use Middleware
-	app.use(errorHandler);
 
 	app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
 }
