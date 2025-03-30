@@ -1,4 +1,4 @@
-import { getAUrl, analytics, shortenUrl } from "./services/urlService.js";
+import { getAUrl, analytics, shortenUrl, getShortUrlAnalytics, getMyUrls } from "./services/urlService.js";
 import { loginUser, logoutUser, createUser, getUser } from "./services/authServices.js";
 import { protect } from "./middlewares/authMiddleware.js";
 
@@ -15,6 +15,13 @@ const resolvers = {
 		getUser: async (_, __, context) => {
 			protect(context);
 			return await getUser();
+		},
+		getShortAnalytics: async (_, { shortId }) => {
+			return await getShortUrlAnalytics(_, {shortId});
+		},
+		getUserUrl: async (_, __, context) => {
+			protect(context);
+			return await getMyUrls(_,__,context);
 		}
 	},
   Mutation: {
@@ -29,7 +36,7 @@ const resolvers = {
 		},
     shortenedUrl: async (_, { url }, context) => {
 			protect(context);
-			return await shortenUrl(url);
+			return await shortenUrl(_, { url }, context);
 		},
 	},
 };

@@ -1,10 +1,22 @@
 import gql from "graphql-tag";
 
 const typeDefs = gql`
+	type Analytics {
+		ip: String!
+		accessedAt: String!
+	}
+
+	type userUrl {
+		creator: User!
+		shortUrl: [Url!]!
+	}
+
   type Url {
     shortId: String!
     originalUrl: String!
+		creator: ID!
     clicks: Int!
+		analytics: [Analytics!]!
     createdAt: String!
   }
 
@@ -26,10 +38,13 @@ const typeDefs = gql`
 		message: String
 	}
 
+
   type Query {
-    getUrl(shortId: String!): Url,
+    getUrl(shortId: String!): Url
 		getAnalytics: [Url!]
 		getUser: [User!]
+		getShortAnalytics(shortId: String!): [Analytics!]!
+		getUserUrl: userUrl
   }
 
   type Mutation {
