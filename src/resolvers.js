@@ -16,8 +16,8 @@ const resolvers = {
 			protect(context);
 			return await getUser();
 		},
-		getShortAnalytics: async (_, { shortId }) => {
-			return await getShortUrlAnalytics(_, {shortId});
+		getShortAnalytics: async (_, args) => {
+			return await getShortUrlAnalytics(_, args);
 		},
 		getUserUrl: async (_, __, context) => {
 			protect(context);

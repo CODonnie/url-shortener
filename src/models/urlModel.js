@@ -10,10 +10,13 @@ const UrlSchema = new mongoose.Schema({
 	analytics: [
 		{
 			ip: String,
-			accessedAt: { type: Date, default: Date.now },
+			userAgent: String,
+			accessedAt: { type: Date, default: () => new Date().toISOString() },
 		}
 	]
 }, { timestamps: true });
+
+UrlSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
 
 const Url = mongoose.models.Url || mongoose.model("Url", UrlSchema);
 

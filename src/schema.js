@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 const typeDefs = gql`
 	type Analytics {
 		ip: String!
+		userAgent: String
 		accessedAt: String!
 	}
 
@@ -43,7 +44,7 @@ const typeDefs = gql`
     getUrl(shortId: String!): Url
 		getAnalytics: [Url!]
 		getUser: [User!]
-		getShortAnalytics(shortId: String!): [Analytics!]!
+		getShortAnalytics(shortId: String!, startDate: String, endDate: String, ip: String, userAgent: String): [Analytics!]!
 		getUserUrl: userUrl
   }
 

@@ -48,20 +48,39 @@ export const analytics = async () => {
       createdAt: new Date(url.createdAt).toISOString(),
     }));
   } catch (error) {
-    console.error(`analytic error - ${error.message}`);
+    console.error(`analytics error - ${error.message}`);
     throw new AppError(error.message);
   }
 };
 
-export const getShortUrlAnalytics = async (_, { shortId }) => {
+export const getShortUrlAnalytics = async (
+  _,
+  { shortId, startDate, endDate, ip, userAgent }
+) => {
   try {
-    const url = await Url.findOne({ shortId });
+    const query = { shortId };
+
+    if (startDate || endDate) {
+      query["analytics.accessedAt"] = {};
+
+      if(startDate) query["analytics.accessedAt"].$gte = new Date(startDate);
+      if (endDate) query["analytics.accessedAt"].$lte = new Date(endDate);
+    }
+
+    if (ip) query["analytics.ip"] = ip;
+    if (userAgent) query["analytics.userAgent"] = userAgent;
+
+    const url = await Url.findOne(query, { analytics: 1 });
+		console.log("url: ", url);
     if (!url) {
       console.log(`no url found bruh!`);
       throw new AppError("url not found");
     }
 
-    return url.analytics || [];
+		return url.analytics.map(entry => ({
+			...entry.toObject(),
+			accessedAt: new Date(entry.accessedAt).toISOString(),
+		})) || [];
   } catch (error) {
     console.log(error.message);
     throw new AppError(error.message);
@@ -71,7 +90,7 @@ export const getShortUrlAnalytics = async (_, { shortId }) => {
 export const getMyUrls = async (_, __, context) => {
   try {
     const userId = context.req.user?.userId;
-		const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId });
 
     if (!user) {
       console.log("user not found");
@@ -86,8 +105,8 @@ export const getMyUrls = async (_, __, context) => {
 
     return {
       creator: user,
-			shortUrl: urls,
-		};
+      shortUrl: urls,
+    };
   } catch (error) {
     console.log("error retreiving url: ", error.message);
     throw new AppError("an error occurred");

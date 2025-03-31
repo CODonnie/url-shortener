@@ -7,7 +7,7 @@ import typeDefs from "./schema.js";
 import resolvers from "./resolvers.js";
 import connectDB from "./config/dbConnection.js";
 import urlRoutes from "./routes/urlRoutes.js";
-import errorHandler from "./middlewares/errorMiddleware.js";
+//import errorHandler from "./middlewares/errorMiddleware.js";
 import cookieParser from "cookie-parser";
 
 //init
@@ -21,7 +21,7 @@ const port = process.env.PORT;
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
-	formatError: errorHandler,
+	//formatError: errorHandler,
 });
 
 //GRAPHQL middleware
